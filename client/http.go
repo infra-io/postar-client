@@ -6,50 +6,76 @@ package client
 
 import (
 	"bytes"
-	"fmt"
+	"context"
 	"io/ioutil"
 	"net/http"
-	"os"
+	"net/url"
 
 	postarapi "github.com/avino-plan/api/go-out/postar"
 	"google.golang.org/protobuf/proto"
 )
 
-func main() {
-	url := "http://127.0.0.1:5897/sendEmail"
+// httpClient is a client used http connection.
+type httpClient struct {
+	client *http.Client
+	url    *url.URL
+}
 
-	emailReq := &postarapi.SendEmailRequest{
-		Email: &postarapi.Email{
-			Receivers: []string{os.Getenv("POSTAR_RECEIVER")},
-			Subject:   "测试邮件",
-			BodyType:  "text/html",
-			Body:      "<p>邮件内容</p>",
-		},
-		Options: nil,
+// NewHTTPClient return a http client.
+// The url may look like: http://127.0.0.1:5897
+func NewHTTPClient(client *http.Client, url *url.URL) Client {
+	return &httpClient{
+		client: client,
+		url:    url,
 	}
-	fmt.Printf("client req: %+v\n", emailReq)
+}
 
-	marshaled, err := proto.Marshal(emailReq)
+// sendEmailURL returns the url of sendEmail api.
+func (hc *httpClient) sendEmailURL() string {
+	return hc.url.Scheme + "://" + hc.url.Hostname() + "/sendEmail"
+}
+
+// sendEmailContentType returns the content type of sendEmail api.
+func (hc *httpClient) sendEmailContentType() string {
+	return "application/octet-stream"
+}
+
+// SendEmail sends an email with given options.
+// It returns traceID on success and error on fail.
+func (hc *httpClient) SendEmail(ctx context.Context, email *Email, opts ...Option) (string, error) {
+	req := &postarapi.SendEmailRequest{
+		Email:   toAPIEmail(email),
+		Options: toAPIOptions(opts...),
+	}
+
+	marshaled, err := proto.Marshal(req)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	resp, err := http.Post(url, "application/octet-stream", bytes.NewReader(marshaled))
+	result, err := hc.client.Post(hc.sendEmailURL(), hc.sendEmailContentType(), bytes.NewReader(marshaled))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	defer resp.Body.Close()
+	defer result.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(result.Body)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	emailRsp := new(postarapi.SendEmailResponse)
-	err = proto.Unmarshal(body, emailRsp)
+	rsp := new(postarapi.SendEmailResponse)
+	err = proto.Unmarshal(body, rsp)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	fmt.Printf("server rsp: %+v\n", emailRsp)
+	// TODO 错误处理
+	return rsp.TraceId, nil
+}
+
+// Close closes the grpc client.
+func (hc *httpClient) Close() error {
+	hc.client.CloseIdleConnections()
+	return nil
 }

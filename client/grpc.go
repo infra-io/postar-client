@@ -8,24 +8,27 @@ import (
 	"context"
 
 	postarapi "github.com/avino-plan/api/go-out/postar"
-	"github.com/avino-plan/postar-client/options"
 	"google.golang.org/grpc"
 )
 
-type GRPCClient struct {
+// grpcClient is a client used grpc connection.
+type grpcClient struct {
 	conn *grpc.ClientConn
 }
 
-func NewGRPCClient(conn *grpc.ClientConn) *GRPCClient {
-	return &GRPCClient{conn: conn}
+// NewGRPCClient return a grpc client.
+func NewGRPCClient(conn *grpc.ClientConn) Client {
+	return &grpcClient{conn: conn}
 }
 
-func (gc *GRPCClient) SendEmail(ctx context.Context, email *Email, opts ...options.Option) (string, error) {
+// SendEmail sends an email with given options.
+// It returns traceID on success and error on failed.
+func (gc *grpcClient) SendEmail(ctx context.Context, email *Email, opts ...Option) (string, error) {
 	client := postarapi.NewPostarServiceClient(gc.conn)
 
 	req := &postarapi.SendEmailRequest{
 		Email:   toAPIEmail(email),
-		Options: nil,
+		Options: toAPIOptions(opts...),
 	}
 	rsp, err := client.SendEmail(ctx, req)
 	if err != nil {
@@ -36,6 +39,7 @@ func (gc *GRPCClient) SendEmail(ctx context.Context, email *Email, opts ...optio
 	return rsp.TraceId, nil
 }
 
-func (gc *GRPCClient) Close() error {
+// Close closes the grpc client.
+func (gc *grpcClient) Close() error {
 	return gc.conn.Close()
 }

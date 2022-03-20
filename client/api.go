@@ -4,7 +4,9 @@
 
 package client
 
-import postarapi "github.com/avino-plan/api/go-out/postar"
+import (
+	postarapi "github.com/avino-plan/api/go-out/postar"
+)
 
 func toAPIEmail(email *Email) *postarapi.Email {
 	if email == nil {
@@ -12,9 +14,26 @@ func toAPIEmail(email *Email) *postarapi.Email {
 	}
 
 	return &postarapi.Email{
-		Receivers: email.receivers,
-		Subject:   email.subject,
-		BodyType:  email.bodyType,
-		Body:      email.body,
+		Receivers: email.Receivers,
+		Subject:   email.Subject,
+		BodyType:  email.BodyType,
+		Body:      email.Body,
 	}
+}
+
+func toAPIOptions(opts ...Option) *postarapi.SendEmailOptions {
+	var o Options
+	for _, opt := range opts {
+		opt(&o)
+	}
+
+	result := new(postarapi.SendEmailOptions)
+	if o.Async != nil {
+		result.Async = *o.Async
+	}
+
+	if o.Timeout != nil {
+		result.TimeoutMillis = int32((*o.Timeout).Milliseconds())
+	}
+	return result
 }
