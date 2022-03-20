@@ -1,6 +1,8 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/FishGoddess/errors v0.0.3 h1:rSjKLIqAjC4KMmGv/utSN2t5cr2e7P/+hT7jni0Hc8k=
+github.com/FishGoddess/errors v0.0.3/go.mod h1:2YWw8ijAMQIfs4FyOFjvahUPQWhgS6lFTkBG++n61+Y=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/avino-plan/api v0.0.4 h1:bQP+oS+EJum1xsijQzZhvjCwJiyGpWep4ZAmooQrW+I=
 github.com/avino-plan/api v0.0.4/go.mod h1:vTF23bjWdJgWmoCfW7L6UeV+pcdfAztkcxBO2jwBsLM=

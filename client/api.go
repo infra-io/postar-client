@@ -5,6 +5,8 @@
 package client
 
 import (
+	"github.com/FishGoddess/errors"
+	baseapi "github.com/avino-plan/api/go-out/base"
 	postarapi "github.com/avino-plan/api/go-out/postar"
 )
 
@@ -36,4 +38,34 @@ func toAPIOptions(opts ...Option) *postarapi.SendEmailOptions {
 		result.TimeoutMillis = int32((*o.Timeout).Milliseconds())
 	}
 	return result
+}
+
+func newError(rsp *postarapi.SendEmailResponse) error {
+	if rsp == nil {
+		return errors.New("rsp is nil")
+	}
+
+	if rsp.Code == baseapi.ServerCode_OK {
+		return nil
+	}
+
+	if rsp.Code == baseapi.ServerCode_BAD_REQUEST {
+		return errors.BadRequest(errors.New(rsp.Msg))
+	}
+
+	if rsp.Code == baseapi.ServerCode_TIMEOUT {
+		return errors.Timeout(errors.New(rsp.Msg))
+	}
+
+	return errors.Wrap(errors.New(rsp.Msg), int32(rsp.Code))
+}
+
+// IsBadRequest returns if err is bad request.
+func IsBadRequest(err error) bool {
+	return errors.IsBadRequest(err)
+}
+
+// IsTimeout returns if err is timeout.
+func IsTimeout(err error) bool {
+	return errors.IsTimeout(err)
 }

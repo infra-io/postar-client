@@ -35,8 +35,7 @@ func (gc *grpcClient) SendEmail(ctx context.Context, email *Email, opts ...Optio
 		return "", err
 	}
 
-	// TODO 错误处理
-	return rsp.TraceId, nil
+	return rsp.TraceId, newError(rsp)
 }
 
 // Close closes the grpc client.
