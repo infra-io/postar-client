@@ -32,7 +32,7 @@ func NewHTTPClient(client *http.Client, url *url.URL) Client {
 
 // sendEmailURL returns the url of sendEmail api.
 func (hc *httpClient) sendEmailURL() string {
-	return hc.url.Scheme + "://" + hc.url.Hostname() + "/sendEmail"
+	return hc.url.Scheme + "://" + hc.url.Host + "/sendEmail"
 }
 
 // sendEmailContentType returns the content type of sendEmail api.

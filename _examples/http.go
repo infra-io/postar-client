@@ -30,7 +30,7 @@ func main() {
 		BodyType:  "text/html",
 		Body:      "<p>邮件内容</p>",
 	}
-	traceID, err := httpClient.SendEmail(context.Background(), email, client.WithAsync(), client.WithTimeout(3*time.Second))
+	traceID, err := httpClient.SendEmail(context.Background(), email, client.WithSync(), client.WithTimeout(30*time.Second))
 	if err != nil {
 		panic(err)
 	}
