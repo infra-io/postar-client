@@ -20,7 +20,7 @@ func main() {
 		panic(err)
 	}
 
-	grpcClient := client.NewGRPCClient(conn)
+	grpcClient := client.NewGrpcClient(conn)
 	defer grpcClient.Close()
 
 	email := &client.Email{

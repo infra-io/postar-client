@@ -6,8 +6,8 @@ package client
 
 import (
 	"github.com/FishGoddess/errors"
-	baseapi "github.com/avino-plan/api/go-out/base"
-	postarapi "github.com/avino-plan/api/go-out/postar"
+	baseapi "github.com/avino-plan/api-go/base"
+	postarapi "github.com/avino-plan/api-go/postar"
 )
 
 func toAPIEmail(email *Email) *postarapi.Email {

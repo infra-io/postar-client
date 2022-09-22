@@ -21,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	httpClient := client.NewHTTPClient(&http.Client{}, address)
+	httpClient := client.NewHttpClient(&http.Client{}, address)
 	defer httpClient.Close()
 
 	email := &client.Email{

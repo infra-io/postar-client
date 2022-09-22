@@ -7,7 +7,7 @@ package client
 import (
 	"context"
 
-	postarapi "github.com/avino-plan/api/go-out/postar"
+	postarapi "github.com/avino-plan/api-go/postar"
 	"google.golang.org/grpc"
 )
 
@@ -16,8 +16,8 @@ type grpcClient struct {
 	conn *grpc.ClientConn
 }
 
-// NewGRPCClient return a grpc client.
-func NewGRPCClient(conn *grpc.ClientConn) Client {
+// NewGrpcClient return a grpc client.
+func NewGrpcClient(conn *grpc.ClientConn) Client {
 	return &grpcClient{conn: conn}
 }
 

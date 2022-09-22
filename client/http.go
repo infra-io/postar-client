@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"net/url"
 
-	postarapi "github.com/avino-plan/api/go-out/postar"
+	postarapi "github.com/avino-plan/api-go/postar"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -21,9 +21,9 @@ type httpClient struct {
 	url    *url.URL
 }
 
-// NewHTTPClient return a http client.
+// NewHttpClient return a http client.
 // The url may look like: http://127.0.0.1:5897
-func NewHTTPClient(client *http.Client, url *url.URL) Client {
+func NewHttpClient(client *http.Client, url *url.URL) Client {
 	return &httpClient{
 		client: client,
 		url:    url,
