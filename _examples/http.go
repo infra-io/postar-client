@@ -7,33 +7,23 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"net/url"
-	"os"
-	"time"
 
-	"github.com/avino-plan/postar-client/client"
+	"github.com/infro-io/postar-client/postar"
 )
 
 func main() {
-	address, err := url.Parse("http://127.0.0.1:5897")
+	client := postar.NewHttpClient("127.0.0.1:7890", 100, "space_token")
+
+	ctx := context.Background()
+	email := &postar.Email{
+		TemplateID: 1000000,
+		To:         []string{"xxx@abc.com"},
+	}
+
+	result, err := client.SendEmail(ctx, email)
 	if err != nil {
 		panic(err)
 	}
 
-	httpClient := client.NewHttpClient(&http.Client{}, address)
-	defer httpClient.Close()
-
-	email := &client.Email{
-		Subject:   "测试邮件",
-		Receivers: []string{os.Getenv("POSTAR_RECEIVER")},
-		BodyType:  "text/html",
-		Body:      "<p>邮件内容</p>",
-	}
-	traceID, err := httpClient.SendEmail(context.Background(), email, client.WithSync(), client.WithTimeout(30*time.Second))
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("TraceID:", traceID)
+	fmt.Println("trace id:", result.TraceID())
 }
