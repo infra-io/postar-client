@@ -80,7 +80,7 @@ func (hc *httpClient) newSendRequest(ctx context.Context, email *Email, opts []S
 	return request, nil
 }
 
-func (hc *httpClient) newSendResponse(response *http.Response) *SendResult {
+func (hc *httpClient) newSendResult(response *http.Response) *SendResult {
 	traceID := response.Header.Get("X-Postar-Trace-Id")
 
 	result := &SendResult{
@@ -105,7 +105,7 @@ func (hc *httpClient) SendEmail(ctx context.Context, email *Email, opts ...SendO
 		return nil, err
 	}
 
-	return hc.newSendResponse(response), nil
+	return hc.newSendResult(response), nil
 }
 
 func (hc *httpClient) Close() error {

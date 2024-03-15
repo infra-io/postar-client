@@ -9,6 +9,8 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+
+	grpcx "github.com/infra-io/servicex/net/grpc"
 )
 
 type grpcClient struct {
@@ -42,6 +44,16 @@ func NewGrpcClient(address string, spaceID int, spaceToken string, opts ...Optio
 	return client, nil
 }
 
+func (gc *grpcClient) newSendResult(md metadata.MD) *SendResult {
+	traceID := grpcx.GetMetadata(md, grpcx.ServiceKeyTraceID)
+
+	result := &SendResult{
+		traceID: traceID,
+	}
+
+	return result
+}
+
 func (gc *grpcClient) SendEmail(ctx context.Context, email *Email, opts ...SendOption) (*SendResult, error) {
 	if email == nil {
 		return nil, errNilEmail
@@ -58,7 +70,7 @@ func (gc *grpcClient) SendEmail(ctx context.Context, email *Email, opts ...SendO
 		return nil, err
 	}
 
-	return nil, nil
+	return gc.newSendResult(md), nil
 }
 
 func (gc *grpcClient) Close() error {

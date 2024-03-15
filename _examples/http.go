@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	client := postar.NewHttpClient("127.0.0.1:7890", 100, "space_token")
+	client := postar.NewHttpClient("127.0.0.1:6897", 100, "space_token")
 
 	ctx := context.Background()
 	email := &postar.Email{
