@@ -1,7 +1,8 @@
 ## 🕰️ 历史版本的特性介绍 (Features in old versions)
 
-### v0.0.1-alpha
+### v0.1.0-alpha (Coming soon)
 
-> 此版本发布于 2222-03-20
+> 此版本发布于 2024-05-01
 
-* 完成正常邮件发送
+* 增加 Postar 服务客户端
+* 增加 Postar Admin 服务客户端

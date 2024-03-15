@@ -21,6 +21,8 @@ _历史版本的特性请查看 [HISTORY.md](./HISTORY.md)。未来版本的新�
 $ go get github.com/infra-io/postar-client
 ```
 
+_具体使用案例请查看 [_examples](./_examples/)。_
+
 ### 🙋🏻‍♀️ 贡献者
 
 如果您觉得 postar-client 缺少您需要的功能，请不要犹豫，马上参与进来，发起一个 _**issue**_。

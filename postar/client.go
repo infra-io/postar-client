@@ -32,4 +32,5 @@ func (sr *SendResult) TraceID() string {
 
 type Client interface {
 	SendEmail(ctx context.Context, email *Email, opts ...SendOption) (*SendResult, error)
+	Close() error
 }

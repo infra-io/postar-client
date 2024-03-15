@@ -21,6 +21,8 @@ _Check [HISTORY.md](./HISTORY.md) and [FUTURE.md](./FUTURE.md) to know about mor
 $ go get github.com/infra-io/postar-client
 ```
 
+_Check more usages in [_examples](./_examples/)._
+
 ### 🙋🏻‍♀️ Contributing
 
 If you find that something is not working as expected please open an _**issue**_.

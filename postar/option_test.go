@@ -10,6 +10,8 @@ import (
 	"net/url"
 	"testing"
 	"time"
+
+	"google.golang.org/grpc"
 )
 
 // go test -v -cover -count=1 -test.cpu=1 -run=^TestWithTimeout$
@@ -66,12 +68,36 @@ func TestWithHttpCookieJar(t *testing.T) {
 	}
 }
 
+// go test -v -cover -count=1 -test.cpu=1 -run=^TestWithGrpcDialOptions$
+func TestWithGrpcDialOptions(t *testing.T) {
+	dialOptions := []grpc.DialOption{grpc.WithBlock()}
+
+	conf := &config{grpcDialOptions: nil}
+	WithGrpcDialOptions(dialOptions...)(conf)
+
+	if len(conf.grpcDialOptions) != len(dialOptions) {
+		t.Fatalf("len(conf.grpcDialOptions) %d != len(dialOptions) %d", len(conf.grpcDialOptions), len(dialOptions))
+	}
+}
+
 // go test -v -cover -count=1 -test.cpu=1 -run=^TestWithSendAsync$
 func TestWithSendAsync(t *testing.T) {
-	conf := &SendOptions{Async: false}
-	WithSendAsync()(conf)
+	opts := &SendOptions{Async: false}
+	WithSendAsync()(opts)
 
-	if !conf.Async {
-		t.Fatal("conf.Async is wrong")
+	if !opts.Async {
+		t.Fatal("opts.Async is wrong")
+	}
+}
+
+// go test -v -cover -count=1 -test.cpu=1 -run=^TestWithGrpcCallOptions$
+func TestWithGrpcCallOptions(t *testing.T) {
+	callOptions := []grpc.CallOption{grpc.EmptyCallOption{}}
+
+	opts := &SendOptions{GrpcCallOptions: nil}
+	WithGrpcCallOptions(callOptions...)(opts)
+
+	if len(opts.GrpcCallOptions) != len(callOptions) {
+		t.Fatalf("len(opts.GrpcCallOptions) %d != len(callOptions) %d", len(opts.GrpcCallOptions), len(callOptions))
 	}
 }

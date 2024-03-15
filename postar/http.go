@@ -50,18 +50,9 @@ func (hc *httpClient) newSendURL() string {
 }
 
 func (hc *httpClient) newSendRequestBody(email *Email, opts []SendOption) (io.Reader, error) {
-	options := newSendOptions()
+	request, _ := newSendEmailRequest(email, opts)
 
-	for _, opt := range opts {
-		opt(options)
-	}
-
-	body := map[string]any{
-		"email":   email,
-		"options": options,
-	}
-
-	bs, err := json.Marshal(body)
+	bs, err := json.Marshal(request)
 	if err != nil {
 		return nil, err
 	}
@@ -115,4 +106,8 @@ func (hc *httpClient) SendEmail(ctx context.Context, email *Email, opts ...SendO
 	}
 
 	return hc.newSendResponse(response), nil
+}
+
+func (hc *httpClient) Close() error {
+	return nil
 }
