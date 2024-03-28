@@ -3,7 +3,7 @@ module github.com/infro-io/postar-client
 go 1.21
 
 require (
-	github.com/infra-io/postar/api v1.0.0
+	github.com/infra-io/postar/api v1.1.0
 	github.com/infra-io/servicex v0.3.2
 	google.golang.org/grpc v1.62.1
 )

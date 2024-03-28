@@ -64,23 +64,14 @@ func WithGrpcDialOptions(grpcOpts ...grpc.DialOption) Option {
 }
 
 type SendOptions struct {
-	Async           bool `json:"async"`
 	GrpcCallOptions []grpc.CallOption
 }
 
 func newSendOptions() *SendOptions {
-	return &SendOptions{
-		Async: false,
-	}
+	return &SendOptions{}
 }
 
 type SendOption func(opts *SendOptions)
-
-func WithSendAsync() SendOption {
-	return func(opts *SendOptions) {
-		opts.Async = true
-	}
-}
 
 func WithGrpcCallOptions(grpcOpts ...grpc.CallOption) SendOption {
 	return func(opts *SendOptions) {

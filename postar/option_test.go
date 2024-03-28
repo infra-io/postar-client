@@ -80,16 +80,6 @@ func TestWithGrpcDialOptions(t *testing.T) {
 	}
 }
 
-// go test -v -cover -count=1 -test.cpu=1 -run=^TestWithSendAsync$
-func TestWithSendAsync(t *testing.T) {
-	opts := &SendOptions{Async: false}
-	WithSendAsync()(opts)
-
-	if !opts.Async {
-		t.Fatal("opts.Async is wrong")
-	}
-}
-
 // go test -v -cover -count=1 -test.cpu=1 -run=^TestWithGrpcCallOptions$
 func TestWithGrpcCallOptions(t *testing.T) {
 	callOptions := []grpc.CallOption{grpc.EmptyCallOption{}}

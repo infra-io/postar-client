@@ -25,9 +25,6 @@ func newSendEmailRequest(email *Email, opts []SendOption) (*postarapi.SendEmailR
 			SubjectParams: email.SubjectParams,
 			ContentParams: email.ContentParams,
 		},
-		Options: &postarapi.SendEmailOptions{
-			Async: options.Async,
-		},
 	}
 
 	return request, options

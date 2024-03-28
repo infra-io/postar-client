@@ -25,8 +25,8 @@ func TestNewSendEmailRequest(t *testing.T) {
 		ContentParams: map[string]string{},
 	}
 
-	options := []SendOption{WithSendAsync()}
-	request, sendOptions := newSendEmailRequest(email, options)
+	options := []SendOption{}
+	request, _ := newSendEmailRequest(email, options)
 	if request.Email.TemplateId != email.TemplateID {
 		t.Fatalf("request.Email.TemplateId %d != email.TemplateID %d", request.Email.TemplateId, email.TemplateID)
 	}
@@ -49,13 +49,5 @@ func TestNewSendEmailRequest(t *testing.T) {
 
 	if fmt.Sprintf("%p", request.Email.ContentParams) != fmt.Sprintf("%p", email.ContentParams) {
 		t.Fatalf("request.Email.ContentParams %+v != email.ContentParams %+v", request.Email.ContentParams, email.ContentParams)
-	}
-
-	if request.Options.Async != sendOptions.Async {
-		t.Fatalf("request.Options.Async %+v != sendOptions.Async %+v", request.Options.Async, sendOptions.Async)
-	}
-
-	if !sendOptions.Async {
-		t.Fatalf("sendOptions.Async %+v is wrong", sendOptions.Async)
 	}
 }
