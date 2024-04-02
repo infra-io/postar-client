@@ -23,14 +23,10 @@ type Email struct {
 }
 
 type SendResult struct {
-	traceID string
+	TraceID string
 }
 
-func (sr *SendResult) TraceID() string {
-	return sr.traceID
-}
-
-type Client interface {
-	SendEmail(ctx context.Context, email *Email, opts ...SendOption) (*SendResult, error)
+type EmailService interface {
+	SendEmail(ctx context.Context, email *Email) (*SendResult, error)
 	Close() error
 }

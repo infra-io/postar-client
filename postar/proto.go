@@ -9,13 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func newSendEmailRequest(email *Email, opts []SendOption) (*postarapi.SendEmailRequest, *SendOptions) {
-	options := newSendOptions()
-
-	for _, opt := range opts {
-		opt(options)
-	}
-
+func newSendEmailRequest(email *Email) *postarapi.SendEmailRequest {
 	request := &postarapi.SendEmailRequest{
 		Email: &postarapi.Email{
 			TemplateId:    email.TemplateID,
@@ -27,7 +21,7 @@ func newSendEmailRequest(email *Email, opts []SendOption) (*postarapi.SendEmailR
 		},
 	}
 
-	return request, options
+	return request
 }
 
 func newEmailService(conn grpc.ClientConnInterface) postarapi.EmailServiceClient {

@@ -25,8 +25,7 @@ func TestNewSendEmailRequest(t *testing.T) {
 		ContentParams: map[string]string{},
 	}
 
-	options := []SendOption{}
-	request, _ := newSendEmailRequest(email, options)
+	request := newSendEmailRequest(email)
 	if request.Email.TemplateId != email.TemplateID {
 		t.Fatalf("request.Email.TemplateId %d != email.TemplateID %d", request.Email.TemplateId, email.TemplateID)
 	}
