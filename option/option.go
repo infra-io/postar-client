@@ -2,33 +2,33 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file.
 
-package postar
+package option
 
 import (
 	"time"
 )
 
-type config struct {
-	timeout  time.Duration
-	certFile string
+type Config struct {
+	Timeout  time.Duration
+	CertFile string
 }
 
-func newConfig() *config {
-	return &config{
-		timeout: 10 * time.Second,
+func NewConfig() *Config {
+	return &Config{
+		Timeout: 10 * time.Second,
 	}
 }
 
-type Option func(conf *config)
+type Option func(conf *Config)
 
 func WithTimeout(timeout time.Duration) Option {
-	return func(conf *config) {
-		conf.timeout = timeout
+	return func(conf *Config) {
+		conf.Timeout = timeout
 	}
 }
 
 func WithCertFile(certFile string) Option {
-	return func(conf *config) {
-		conf.certFile = certFile
+	return func(conf *Config) {
+		conf.CertFile = certFile
 	}
 }

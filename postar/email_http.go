@@ -12,6 +12,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/infro-io/postar-client/option"
 	httpx "github.com/infro-io/postar-client/pkg/http"
 	tlsx "github.com/infro-io/postar-client/pkg/tls"
 )
@@ -24,8 +25,8 @@ type httpEmailService struct {
 	client *http.Client
 }
 
-func NewHttpEmailService(address string, spaceID int, spaceToken string, opts ...Option) (EmailService, error) {
-	conf := newConfig()
+func NewHttpEmailService(address string, spaceID int, spaceToken string, opts ...option.Option) (EmailService, error) {
+	conf := option.NewConfig()
 
 	for _, opt := range opts {
 		opt(conf)
@@ -38,7 +39,7 @@ func NewHttpEmailService(address string, spaceID int, spaceToken string, opts ..
 
 	client := &http.Client{
 		Transport: transport,
-		Timeout:   conf.timeout,
+		Timeout:   conf.Timeout,
 	}
 
 	service := &httpEmailService{
@@ -51,11 +52,11 @@ func NewHttpEmailService(address string, spaceID int, spaceToken string, opts ..
 	return service, nil
 }
 
-func newHttpTransport(conf *config) (*http.Transport, error) {
+func newHttpTransport(conf *option.Config) (*http.Transport, error) {
 	transport := new(http.Transport)
 
-	if conf.certFile != "" {
-		certPool, err := tlsx.NewCertPool(conf.certFile)
+	if conf.CertFile != "" {
+		certPool, err := tlsx.NewCertPool(conf.CertFile)
 		if err != nil {
 			return nil, err
 		}

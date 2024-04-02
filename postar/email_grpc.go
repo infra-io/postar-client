@@ -7,6 +7,7 @@ package postar
 import (
 	"context"
 
+	"github.com/infro-io/postar-client/option"
 	grpcx "github.com/infro-io/postar-client/pkg/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -20,14 +21,14 @@ type grpcEmailService struct {
 	conn *grpc.ClientConn
 }
 
-func NewGrpcEmailService(address string, spaceID int, spaceToken string, opts ...Option) (EmailService, error) {
-	conf := newConfig()
+func NewGrpcEmailService(address string, spaceID int, spaceToken string, opts ...option.Option) (EmailService, error) {
+	conf := option.NewConfig()
 
 	for _, opt := range opts {
 		opt(conf)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), conf.timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), conf.Timeout)
 	defer cancel()
 
 	dialOptions, err := newGrpcDialOptions(conf)
@@ -49,11 +50,11 @@ func NewGrpcEmailService(address string, spaceID int, spaceToken string, opts ..
 	return service, nil
 }
 
-func newGrpcDialOptions(conf *config) ([]grpc.DialOption, error) {
+func newGrpcDialOptions(conf *option.Config) ([]grpc.DialOption, error) {
 	var dialOptions []grpc.DialOption
 
-	if conf.certFile != "" {
-		creds, err := grpcx.NewClientTLSFromCert(conf.certFile)
+	if conf.CertFile != "" {
+		creds, err := grpcx.NewClientTLSFromCert(conf.CertFile)
 		if err != nil {
 			return nil, err
 		}

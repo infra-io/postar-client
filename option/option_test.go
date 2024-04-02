@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file.
 
-package postar
+package option
 
 import (
 	"testing"
@@ -11,20 +11,20 @@ import (
 
 // go test -v -cover -count=1 -test.cpu=1 -run=^TestWithTimeout$
 func TestWithTimeout(t *testing.T) {
-	conf := &config{timeout: 0}
+	conf := &Config{Timeout: 0}
 	WithTimeout(time.Second)(conf)
 
-	if conf.timeout != time.Second {
-		t.Fatal("conf.timeout is wrong")
+	if conf.Timeout != time.Second {
+		t.Fatal("conf.Timeout is wrong")
 	}
 }
 
 // go test -v -cover -count=1 -test.cpu=1 -run=^TestWithCertFile$
 func TestWithCertFile(t *testing.T) {
-	conf := &config{certFile: ""}
+	conf := &Config{CertFile: ""}
 	WithCertFile("xxx")(conf)
 
-	if conf.certFile != "xxx" {
-		t.Fatal("conf.certFile is wrong")
+	if conf.CertFile != "xxx" {
+		t.Fatal("conf.CertFile is wrong")
 	}
 }
