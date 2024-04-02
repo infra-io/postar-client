@@ -66,11 +66,6 @@ func newGrpcDialOptions(conf *config) ([]grpc.DialOption, error) {
 	return dialOptions, nil
 }
 
-func (ges *grpcEmailService) newMetadata() metadata.MD {
-	var md metadata.MD
-	return grpcx.SetSpace(md, ges.spaceID, ges.spaceToken)
-}
-
 func (ges *grpcEmailService) newSendResult(md metadata.MD) *SendResult {
 	result := &SendResult{
 		TraceID: grpcx.GetTraceID(md),
@@ -84,10 +79,11 @@ func (ges *grpcEmailService) SendEmail(ctx context.Context, email *Email) (*Send
 		return nil, errNilEmail
 	}
 
+	ctx = grpcx.SetSpace(ctx, ges.spaceID, ges.spaceToken)
 	emailService := newEmailService(ges.conn)
 	request := newSendEmailRequest(email)
 
-	md := ges.newMetadata()
+	md := metadata.Pairs()
 	callOptions := []grpc.CallOption{grpc.Header(&md)}
 
 	_, err := emailService.SendEmail(ctx, request, callOptions...)

@@ -5,6 +5,7 @@
 package grpc
 
 import (
+	"context"
 	"strconv"
 
 	"google.golang.org/grpc/metadata"
@@ -16,10 +17,9 @@ const (
 	metadataKeyTraceID    = "postar.trace_id"
 )
 
-func SetSpace(md metadata.MD, spaceID int, spaceToken string) metadata.MD {
-	md.Set(metadataKeySpaceID, strconv.Itoa(spaceID))
-	md.Set(metadataKeySpaceToken, spaceToken)
-	return md
+func SetSpace(ctx context.Context, spaceID int, spaceToken string) context.Context {
+	ctx = metadata.AppendToOutgoingContext(ctx, metadataKeySpaceID, strconv.Itoa(spaceID), metadataKeySpaceToken, spaceToken)
+	return ctx
 }
 
 func getMetadata(md metadata.MD, key string) string {
